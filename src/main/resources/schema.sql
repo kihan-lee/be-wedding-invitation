@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS invitation_view
     guest_id    BIGINT,
     access_type VARCHAR(10) NOT NULL,
     viewed_at   TIMESTAMP   NOT NULL DEFAULT now(),
-    ip_address  VARCHAR(45),
     CONSTRAINT pk_invitation_view PRIMARY KEY (id),
     CONSTRAINT fk_invitation_view_guest FOREIGN KEY (guest_id) REFERENCES guest (id),
     CONSTRAINT chk_invitation_view_access_type CHECK (access_type IN ('LINK', 'QR'))

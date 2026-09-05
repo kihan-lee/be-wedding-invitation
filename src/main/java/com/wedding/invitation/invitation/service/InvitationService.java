@@ -21,33 +21,32 @@ public class InvitationService {
     private final GuestRepository guestRepository;
     private final InvitationViewRepository invitationViewRepository;
 
-    public InvitationResponse getInvitation(String token, AccessType accessType, String ipAddress) {
+    public InvitationResponse getInvitation(String token, AccessType accessType) {
         if (!StringUtils.hasText(token)) {
-            return anonymousAccess(accessType, ipAddress);
+            return anonymousAccess(accessType);
         }
-        return personalizedAccess(token, accessType, ipAddress);
+        return personalizedAccess(token, accessType);
     }
 
-    private InvitationResponse personalizedAccess(String token, AccessType accessType, String ipAddress) {
+    private InvitationResponse personalizedAccess(String token, AccessType accessType) {
         Guest guest = guestRepository.findByTokenAndIsActiveTrue(token)
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_INVITATION_TOKEN));
 
-        logView(guest, accessType, ipAddress);
+        logView(guest, accessType);
 
         return new InvitationResponse(true, guest.getName(), guest.getSide());
     }
 
-    private InvitationResponse anonymousAccess(AccessType accessType, String ipAddress) {
-        logView(null, accessType, ipAddress);
+    private InvitationResponse anonymousAccess(AccessType accessType) {
+        logView(null, accessType);
 
         return new InvitationResponse(false, null, null);
     }
 
-    private void logView(Guest guest, AccessType accessType, String ipAddress) {
+    private void logView(Guest guest, AccessType accessType) {
         InvitationView view = InvitationView.builder()
                 .guest(guest)
                 .accessType(accessType)
-                .ipAddress(ipAddress)
                 .build();
         invitationViewRepository.save(view);
     }

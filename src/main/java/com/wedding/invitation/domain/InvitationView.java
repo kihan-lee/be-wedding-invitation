@@ -29,18 +29,14 @@ public class InvitationView {
     @Column(nullable = false, updatable = false)
     private LocalDateTime viewedAt;
 
-    @Column(length = 45)
-    private String ipAddress;
-
     @PrePersist
     protected void onCreate() {
         this.viewedAt = LocalDateTime.now();
     }
 
     @Builder
-    public InvitationView(Guest guest, AccessType accessType, String ipAddress) {
+    public InvitationView(Guest guest, AccessType accessType) {
         this.guest = guest;
         this.accessType = accessType;
-        this.ipAddress = ipAddress;
     }
 }

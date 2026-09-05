@@ -61,7 +61,7 @@ public class DashboardService {
 
     private RecentActivityResponse.RecentView toRecentView(InvitationView view) {
         return new RecentActivityResponse.RecentView(
-                view.getGuest().getName(),
+                view.getGuest() == null ? null : view.getGuest().getName(),
                 view.getAccessType(),
                 view.getViewedAt()
         );

@@ -17,18 +17,41 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
     open-in-view: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         default_schema: wedding-invitation
+
+logging:
+  level:
+    org.hibernate.SQL: warn
+    org.hibernate.orm.jdbc.bind: warn
 
 jwt:
   admin:
     secret: ${JWT_ADMIN_SECRET}
-    access-token-expiration: 3600000       # 1시간 (ms)
-    refresh-token-expiration: 1209600000   # 14일 (ms)
+    access-token-expiration: 43200000      # 12시간 (ms)
+    refresh-token-expiration: 1209600000   # 14일 (ms). 현재 미사용
 
 server:
   port: 8080
+
+---
+# 로컬 개발용 프로파일입니다. SPRING_PROFILES_ACTIVE=local 로 실행 시 SQL 로그가 다시 켜집니다.
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace

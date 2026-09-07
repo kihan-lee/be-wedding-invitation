@@ -6,7 +6,6 @@ import com.wedding.invitation.invitation.dto.InvitationResponse;
 import com.wedding.invitation.invitation.dto.MessageCreateRequest;
 import com.wedding.invitation.invitation.service.InvitationMessageService;
 import com.wedding.invitation.invitation.service.InvitationService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,11 +28,9 @@ public class InvitationController {
     @GetMapping
     public ApiResponse<InvitationResponse> getInvitation(
             @RequestParam(required = false) String token,
-            @RequestParam AccessType accessType,
-            HttpServletRequest request
+            @RequestParam AccessType accessType
     ) {
-        String ipAddress = request.getRemoteAddr();
-        InvitationResponse response = invitationService.getInvitation(token, accessType, ipAddress);
+        InvitationResponse response = invitationService.getInvitation(token, accessType);
         return ApiResponse.success(response);
     }
 

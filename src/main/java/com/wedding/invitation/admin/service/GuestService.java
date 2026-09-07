@@ -7,12 +7,14 @@ import com.wedding.invitation.common.exception.ErrorCode;
 import com.wedding.invitation.domain.Guest;
 import com.wedding.invitation.invitation.repository.GuestRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -46,6 +48,7 @@ public class GuestService {
 
     private GuestCreateResponse createOne(GuestCreateRequest request) {
         if (guestRepository.existsByName(request.getName())) {
+            log.warn("하객 등록 실패, 이미 등록된 이름: {}", request.getName());
             throw new CustomException(ErrorCode.DUPLICATE_GUEST_NAME);
         }
 

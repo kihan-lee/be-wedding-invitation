@@ -14,15 +14,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * On an invalid or expired token this filter simply leaves the request unauthenticated
- * rather than throwing, so JwtAuthenticationEntryPoint (not this filter) produces the
- * 401 response for protected endpoints.
- */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer ";
+
+    /** 인증 실패 사유(ErrorCode)를 담는 요청 속성 키입니다. */
+    public static final String AUTH_ERROR_CODE = "authErrorCode";
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -51,6 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (CustomException e) {
                 SecurityContextHolder.clearContext();
+                request.setAttribute(AUTH_ERROR_CODE, e.getErrorCode());
             }
         }
 

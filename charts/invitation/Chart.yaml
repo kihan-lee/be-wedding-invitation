@@ -7,4 +7,4 @@ type: application
 version: 0.1.0
 # 앱 버전 = 이미지 태그의 기본값. 이미지는 이 레포 루트의 Dockerfile 로 로컬 빌드한다
 # (레지스트리가 없는 박스라 containerd k8s.io 네임스페이스에 직접 적재. values.image 주석 참고).
-appVersion: "0.0.1"
+appVersion: "0.0.2"
